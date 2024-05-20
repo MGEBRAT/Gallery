@@ -1,0 +1,44 @@
+{
+  "kind": "collectionType",
+  "collectionName": "autors",
+  "info": {
+    "singularName": "autor",
+    "pluralName": "autors",
+    "displayName": "Autor",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "fio": {
+      "type": "text",
+      "required": true
+    },
+    "dateRog": {
+      "type": "date"
+    },
+    "img": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "descr": {
+      "type": "text",
+      "required": true
+    },
+    "pictures": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::picture.picture",
+      "mappedBy": "autor_id"
+    },
+    "Country": {
+      "type": "text"
+    }
+  }
+}
