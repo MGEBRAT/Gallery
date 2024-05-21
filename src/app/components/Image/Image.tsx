@@ -3,9 +3,9 @@ import Imager from "next/image";
 import usePicture from "@/Hooks/usePicture";
 import useReviews from "@/Hooks/useReviews";
 import useAutors from "@/Hooks/useAutors";
-import GlobalApi from '@/utils/GlobalApi';
+import GlobalApi from "@/utils/GlobalApi";
 import Modal from "react-modal";
-
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 
 const Image = () => {
   const pictureList = usePicture();
@@ -15,35 +15,42 @@ const Image = () => {
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [selectedAuthor, setSelectedAuthor] = useState<string>("");
 
-  const [ nameUser, setNameUser ] = useState();
-    const [ text, setText ] = useState();
-    const [ date, setDate ] = useState();
-    const [ formField, setFormField ] = useState(false);
+  const [nameUser, setNameUser] = useState();
+  const [text, setText] = useState();
+  const [date, setDate] = useState();
+  const [picture, setPicture] = useState();
+  const [formField, setFormField] = useState(false);
 
-    useEffect(() => {
-        if ( nameUser && text && date ) {
-            setFormField(true);
-        } else {
-            setFormField(false);
-        }
-    }, [ nameUser, text, date ]);
+  const { user } = useKindeBrowserClient();
+  useEffect(() => {
+    console.log(user)
+  }, [user])
 
-    const saveFields = () => {
-        const data = {
-            data: {
-              nameUser: nameUser,
-              text: text,
-              date: date
-            }
-        }
-        GlobalApi.createReview(data).then(resp => {
-            console.log(resp);
-            if ( resp ) {
-                alert('Данные успешно отправлены!');
-            }
-        });
+  useEffect(() => {
+    if (nameUser && text && date && picture) {
+      setFormField(true);
+    } else {
+      setFormField(false);
     }
+  }, [nameUser, text, date, picture]);
 
+  const saveFields = () => {
+    const currentDate = new Date().toISOString(); 
+    const data = {
+      data: {
+        nameUser: (user?.given_name || "") + " " + (user?.family_name || ""), 
+        text: text,
+        date: currentDate,
+        picture: selectedAutor.id, 
+      },
+    };
+    GlobalApi.createReview(data).then((resp) => {
+      console.log(resp);
+      if (resp) {
+        alert("Данные успешно отправлены!");
+      }
+    });
+  };
 
   const filteredPictures = pictureList.filter(
     (picture) =>
@@ -187,8 +194,8 @@ const Image = () => {
         ariaHideApp={false}
       >
         {selectedAutor && (
-          <div>
-            <div className="flex items-center justify-between">
+          <div className="overflow-y-scroll  max-h-[800px]">
+            <div className="flex items-center justify-between ">
               <div className="text-black flex items-end gap-2 ">
                 <h2 className="text-5xl font-inter font-normal ">
                   {selectedAutor.attributes?.name}
@@ -205,7 +212,7 @@ const Image = () => {
                 x
               </button>
             </div>
-            <div className="mt-8 flex items-start gap-4">
+            <div className="mt-8 flex items-start gap-4 ">
               <Imager
                 alt=""
                 className="rounded-md max-w-[900px] max-h-[500px] object-contain"
@@ -227,10 +234,7 @@ const Image = () => {
             </div>
             <div className="mt-10">
               <div>
-                <div
-                  className="pb-1 w-full border-b-[2px] flex text-korich items-center    border-korich"
-
-                >
+                <div className="pb-1 w-full border-b-[2px] flex text-korich items-center    border-korich">
                   <Imager
                     alt=""
                     src={"/assets/svg/pencil.svg"}
@@ -241,29 +245,52 @@ const Image = () => {
                     className="w-full text-korich placeholder "
                     type="text"
                     onChange={(e) => setText(e.target.value)}
-                    id='text'
+                    id="text"
                     placeholder="Написать коментарий"
                   />
-                  <button onClick={() => saveFields()}  className=" font-semibold">Отправить</button>
+                  <button
+                    onClick={() => {
+                      if (user) {
+                        saveFields();
+                      } else {
+                        alert("Пожалуйста, зарегистрируйтесь, чтобы оставить комментарий.");
+                      }
+                    }}
+                    className=" font-semibold"
+                  >
+                    Отправить
+                  </button>
                 </div>
                 {/* коментарии вывод под опред пост */}
-                {reviewsList.filter((reviews) => reviews.attributes?.picture === selectedAutor?.id).map((reviews, index) => {
-  return (
-    <div
-      key={index}
-      className="text-black italic w-full border-b-[2px] py-3  doted border-korich"
-    >
-      <p className="font-semibold">{reviews.attributes?.nameUser}</p>
-      <p className="">
-        {new Date(reviews.attributes?.date).toLocaleString("ru", {
-          day: "2-digit",
-          month: "long",
-        })}
-      </p>
-      <p className="mt-1">“{reviews.attributes?.text}”</p>
-    </div>
-  );
-})}
+                {reviewsList
+                  .filter(
+                    (review) =>
+                      review.attributes?.picture &&
+                      review.attributes?.picture.data &&
+                      review.attributes?.picture.data.id === selectedAutor?.id
+                  )
+                  .map((reviews, index) => {
+                    return (
+                      <div
+                        key={index}
+                        className="text-black italic w-full border-b-[2px] py-3  doted border-korich"
+                      >
+                        <p className="font-semibold">
+                          {reviews.attributes?.nameUser}
+                        </p>
+                        <p className="">
+                          {new Date(reviews.attributes?.date).toLocaleString(
+                            "ru",
+                            {
+                              day: "2-digit",
+                              month: "long",
+                            }
+                          )}
+                        </p>
+                        <p className="mt-1">“{reviews.attributes?.text}”</p>
+                      </div>
+                    );
+                  })}
               </div>
             </div>
           </div>

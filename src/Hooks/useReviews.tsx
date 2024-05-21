@@ -2,7 +2,7 @@
 import GlobalApi from '@/utils/GlobalApi';
 import React, { useEffect, useState } from 'react'
 
-const usePicture = () => {
+const useReviews = () => {
 
     const [reviewsList, setReviewsList] = useState([]);
 
@@ -21,4 +21,4 @@ const usePicture = () => {
 
 }
 
-export default usePicture;
+export default useReviews;

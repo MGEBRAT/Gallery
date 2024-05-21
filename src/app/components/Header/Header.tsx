@@ -1,10 +1,12 @@
 "use client"
 import Image from 'next/image'
 import Link from 'next/link'
+
 import React, { useEffect } from 'react'
 import {NavbarRight, NavbarLeft} from '../Navbar/Navbar'
 import { RegisterLink, LoginLink, LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
+
 
 
 const Header = () => {
@@ -29,7 +31,7 @@ const Header = () => {
                 <>
                   <div className='flex items-center gap-1'>
                     <LogoutLink className="text-white font-inter font-medium text-xl bg-korich rounded-md py-1 px-[18px]">Выйти</LogoutLink>
-                    <button className="text-white font-inter font-medium text-xl bg-korich rounded-md py-1 px-[18px]"  >Профиль</button>
+                    {/* <button className="text-white font-inter font-medium text-xl bg-korich rounded-md py-1 px-[18px]"  >Профиль</button> */}
                   </div>
                 </>
                 :
