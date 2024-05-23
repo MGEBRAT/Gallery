@@ -10,6 +10,7 @@ const axiosClient = axios.create({
 });
 
 
+
 const getPicture = () => axiosClient.get('/pictures?populate=*');
 const getAutors = () => axiosClient.get('/autors?populate=*');
 const getReviews = () => axiosClient.get('/reviews?populate=*');

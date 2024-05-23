@@ -52,6 +52,7 @@ const Image = () => {
     });
   };
 
+
   const filteredPictures = pictureList.filter(
     (picture) =>
       (selectedDate === "" ||
@@ -206,11 +207,11 @@ const Image = () => {
                 </p>
               </div>
               <button
-                className="text-black border-none bg-transparent text-5xl font-light"
-                onClick={closeModal}
-              >
-                x
-              </button>
+                  onClick={() => addToFavorites(selectedAutor.id)}
+                  className="absolute top-[490px] right-[250px] rounded-md bg-butgreen px-[8px] py-[6px]"
+                >
+                  Добавить в избранное
+                </button>
             </div>
             <div className="mt-8 flex items-start gap-4 ">
               <Imager
@@ -230,6 +231,7 @@ const Image = () => {
                 <p className="text-black text-xl">
                   {selectedAutor.attributes?.descr}
                 </p>
+                
               </div>
             </div>
             <div className="mt-10">

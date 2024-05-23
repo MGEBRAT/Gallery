@@ -31,7 +31,7 @@ const Header = () => {
                 <>
                   <div className='flex items-center gap-1'>
                     <LogoutLink className="text-white font-inter font-medium text-xl bg-korich rounded-md py-1 px-[18px]">Выйти</LogoutLink>
-                    {/* <button className="text-white font-inter font-medium text-xl bg-korich rounded-md py-1 px-[18px]"  >Профиль</button> */}
+                    <Link href={'/profile'} className="text-white font-inter font-medium text-xl bg-korich rounded-md py-1 px-[18px]" >Профиль</Link>
                   </div>
                 </>
                 :
