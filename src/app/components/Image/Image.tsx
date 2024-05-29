@@ -52,6 +52,27 @@ const Image = () => {
     });
   };
 
+  const addToFavorites = () => {
+    if (user) {
+      const data = {
+        data: {
+          gmail: user.email,
+          pictures: selectedAutor.id,
+        },
+      };
+  
+      // Assuming you have a function called `GlobalApi.addToFavorites` to add data to favorites
+      GlobalApi.addFavorites(data).then((resp) => {
+        console.log(resp);
+        if (resp) {
+          alert("Картина добавлена в избранное!");
+        }
+      });
+    } else {
+      alert("Пожалуйста, зарегистрируйтесь, чтобы добавить картину в избранное.");
+    }
+  };
+  
 
   const filteredPictures = pictureList.filter(
     (picture) =>
@@ -207,7 +228,7 @@ const Image = () => {
                 </p>
               </div>
               <button
-                  onClick={() => addToFavorites(selectedAutor.id)}
+                  onClick={() => addToFavorites()}
                   className="absolute top-[490px] right-[250px] rounded-md bg-butgreen px-[8px] py-[6px]"
                 >
                   Добавить в избранное
