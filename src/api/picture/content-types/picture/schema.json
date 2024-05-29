@@ -46,6 +46,12 @@
       "relation": "oneToMany",
       "target": "api::review.review",
       "mappedBy": "picture"
+    },
+    "favorite": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::favorite.favorite",
+      "inversedBy": "pictures"
     }
   }
 }

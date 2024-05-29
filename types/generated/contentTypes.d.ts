@@ -828,6 +828,41 @@ export interface ApiAutorAutor extends Schema.CollectionType {
   };
 }
 
+export interface ApiFavoriteFavorite extends Schema.CollectionType {
+  collectionName: 'favorites';
+  info: {
+    singularName: 'favorite';
+    pluralName: 'favorites';
+    displayName: 'favorite';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    gmail: Attribute.String;
+    pictures: Attribute.Relation<
+      'api::favorite.favorite',
+      'oneToMany',
+      'api::picture.picture'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::favorite.favorite',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::favorite.favorite',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiPicturePicture extends Schema.CollectionType {
   collectionName: 'pictures';
   info: {
@@ -854,6 +889,11 @@ export interface ApiPicturePicture extends Schema.CollectionType {
       'api::picture.picture',
       'oneToMany',
       'api::review.review'
+    >;
+    favorite: Attribute.Relation<
+      'api::picture.picture',
+      'manyToOne',
+      'api::favorite.favorite'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -930,6 +970,7 @@ declare module '@strapi/types' {
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'plugin::i18n.locale': PluginI18NLocale;
       'api::autor.autor': ApiAutorAutor;
+      'api::favorite.favorite': ApiFavoriteFavorite;
       'api::picture.picture': ApiPicturePicture;
       'api::review.review': ApiReviewReview;
     }
