@@ -14,11 +14,13 @@ const axiosClient = axios.create({
 const getPicture = () => axiosClient.get('/pictures?populate=*');
 const getAutors = () => axiosClient.get('/autors?populate=*');
 const getReviews = () => axiosClient.get('/reviews?populate=*');
+const getFavorites = () => axiosClient.get('/favorites?populate[0]=pictures&populate[1]=pictures.img');
 const createReview = (data) => axiosClient.post('/reviews', data);
 
 export default {
     getPicture,
     getAutors,
     getReviews,
-    createReview
+    createReview,
+    getFavorites
 }

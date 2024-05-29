@@ -29,8 +29,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru">
-      <body className={`${inter.variable} ${literata.variable} w-full  text-white`}>
+    <html  lang="ru">
+      <body className={`${inter.variable} ${literata.variable} w-full  text-white `}>
         <div className="__next">
           <Header />
           <main className="main w-full" id="main">

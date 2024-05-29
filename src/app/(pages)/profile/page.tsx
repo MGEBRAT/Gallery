@@ -1,14 +1,15 @@
 "use client";
 
+import useFavorites from '@/Hooks/useFavorites';
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 import Image from 'next/image';
 
 
-
 export default function page() {
 
-  const {user} = useKindeBrowserClient();
 
+  const {user} = useKindeBrowserClient();
+  const favoritesList = useFavorites();
   return (
     <section className='w-full py-16 h-[700px]'>
       <div className="container mx-auto">
@@ -22,6 +23,35 @@ export default function page() {
                 <h2 className='text-3xl font-literata  text-black'>Избранное</h2>
             </div>
             
+    {useFavorites.length === 0 ? (
+              <div className="col-start-1 col-end-4 flex items-center justify-center start-cols-2 h-[576px]">
+                <p className="text-center text-5xl text-black font-literata font-medium">
+                  Ничего нет
+                </p>
+              </div>
+            ) : (
+              useFavorites.map((item, index) => {
+                return (
+                  <div
+                    key={index}
+                    className="relative  w-[414px] h-[576px] mb-[50px]"
+                  >
+<Image
+                  alt="картина"
+                  width={200}
+                  height={200}
+                  className="absolute object-cover rounded-md bg-cover bg-center bg-no-repeat z-[-3] top-0 min-w-[414px] h-[577px]"
+                  src={
+                    process.env.NEXT_PUBLIC_STRAPI_API_URL +
+                    item.attributes.pictures.data[0].attributes.img.data.attributes.img.url
+                  }
+                ></Image>
+                  </div>
+                );
+              })
+            )}
+
+
         </div>
       </div>
     </section>
