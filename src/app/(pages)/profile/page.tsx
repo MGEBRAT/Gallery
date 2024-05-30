@@ -1,6 +1,7 @@
 "use client";
 
 import useFavorites from "@/Hooks/useFavorites";
+import GlobalApi from "@/utils/GlobalApi";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import Image from "next/image";
 
@@ -12,6 +13,25 @@ export default function page() {
   const favoritesList = useFavorites();
 
 
+
+  const deletedFavorites = (id: string) => {
+    console.log(favoritesList)
+
+    const data = {
+      data: {
+        gmail:  favoritesList.attributes?.gmail, 
+        picture: id,
+      },
+    };
+    GlobalApi.deleteFavorites(data).then((resp: ResponseType) => {
+      console.log(resp);
+      if (resp) {
+        alert("удалено");
+      } else {
+        alert("ащибка");
+      }
+    });
+  };
 
   
   return (
@@ -48,6 +68,7 @@ export default function page() {
                   key={index}
                   className="relative  w-[414px] h-[576px] mb-[50px]"
                 >
+                  <div onClick={() => deletedFavorites(item.id)} className="mt-2 ml-2 p-2 w-[50px] h-[50px] rounded-md bg-gray-300 cursor-pointer flex items-center justify-center text-center"><span className="text-center">X</span></div>
                   <Image
                     alt="картина"
                     width={200}
@@ -55,8 +76,7 @@ export default function page() {
                     className="absolute object-cover rounded-md bg-cover bg-center bg-no-repeat z-[-3] top-0 min-w-[414px] h-[577px]"
                     src={
                       process.env.NEXT_PUBLIC_STRAPI_API_URL +
-                      item.attributes.pictures.data[0].attributes.img.data
-                        .attributes.url
+                      item.attributes.pictures.data[0].attributes.img.data.attributes.url
                     }
                   ></Image>
                 </div>
