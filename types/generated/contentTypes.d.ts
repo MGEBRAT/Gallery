@@ -834,6 +834,7 @@ export interface ApiFavoriteFavorite extends Schema.CollectionType {
     singularName: 'favorite';
     pluralName: 'favorites';
     displayName: 'favorite';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -842,7 +843,7 @@ export interface ApiFavoriteFavorite extends Schema.CollectionType {
     gmail: Attribute.String;
     pictures: Attribute.Relation<
       'api::favorite.favorite',
-      'oneToMany',
+      'manyToMany',
       'api::picture.picture'
     >;
     createdAt: Attribute.DateTime;
@@ -890,9 +891,9 @@ export interface ApiPicturePicture extends Schema.CollectionType {
       'oneToMany',
       'api::review.review'
     >;
-    favorite: Attribute.Relation<
+    favorites: Attribute.Relation<
       'api::picture.picture',
-      'manyToOne',
+      'manyToMany',
       'api::favorite.favorite'
     >;
     createdAt: Attribute.DateTime;

@@ -4,7 +4,8 @@
   "info": {
     "singularName": "favorite",
     "pluralName": "favorites",
-    "displayName": "favorite"
+    "displayName": "favorite",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -16,9 +17,9 @@
     },
     "pictures": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "manyToMany",
       "target": "api::picture.picture",
-      "mappedBy": "favorite"
+      "mappedBy": "favorites"
     }
   }
 }
